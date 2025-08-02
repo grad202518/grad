@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Spacer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    textarea, input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    #output {
+      min-height: 2.5rem;
+      border: 1px solid #ccc;
+      padding: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Character Spacer</h1>
+  <label for="inputText">Enter text:</label>
+  <textarea id="inputText" rows="4" placeholder="Type or paste text here..."></textarea>
+
+  <label for="output">Spaced output:</label>
+  <div id="output"></div>
+
+  <script>
+    // Function to insert a single space between each character of a string.
+    // Prior to spacing, collapse any runs of two or more spaces into a
+    // single space to avoid unintended double-spacing in the output.
+    function spaceCharacters(str) {
+      // Replace consecutive whitespace characters (two or more) with a single space.
+      // This ensures that multiple spaces in the input are normalized to one.
+      const collapsed = str.replace(/\s{2,}/g, ' ');
+      // Split the collapsed string by single spaces. Each part represents a word
+      // (including sequences of non-space characters). For each word, spread
+      // it into individual characters and join them with a single space. Then
+      // join the resulting array of spaced words with a single space. This
+      // approach avoids inserting extra spaces around the original space character.
+      return collapsed
+        .split(' ')
+        .map(word => [...word].join(' '))
+        .join(' ');
+    }
+
+    // Update the output div whenever the input changes
+    const inputField = document.getElementById('inputText');
+    const outputDiv = document.getElementById('output');
+
+    inputField.addEventListener('input', () => {
+      const inputValue = inputField.value;
+      outputDiv.textContent = spaceCharacters(inputValue);
+    });
+  </script>
+</body>
+</html>
